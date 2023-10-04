@@ -12,7 +12,7 @@ namespace CodeBase.Infrastructure.AssetManagement
 
         public GameObject Instantiate(string path, Vector3 at)
         {
-            var prefab = Resources.Load<GameObject>(path);
+            var prefab = Resources.Load<GameObject>(AssetPath.HeroPath);
             return Object.Instantiate(prefab, at, Quaternion.identity);
         }
     }
