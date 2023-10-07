@@ -1,8 +1,8 @@
-using System;
 using CodeBase.Data;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Inputs;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Hero
@@ -36,6 +36,8 @@ namespace CodeBase.Hero
 
         private void OnAttack()
         {
+            for (int i = 0; i < Hit(); i++) 
+                _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
         }
 
         public void LoadProgress(PlayerProgress progress) => 

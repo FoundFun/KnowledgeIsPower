@@ -1,6 +1,7 @@
 using System;
 using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Logic;
 using CodeBase.UI;
 using UnityEngine;
 

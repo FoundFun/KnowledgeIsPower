@@ -2,6 +2,7 @@ using System.Linq;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Enemy
@@ -48,7 +49,7 @@ namespace CodeBase.Enemy
             if (Hit(out Collider hit))
             {
                 PhysicsDebug.DrawDebug(StartPoint(), Cleavage, 1);
-                hit.transform.GetComponent<HeroHealth>().TakeDamage(Damage);
+                hit.transform.GetComponent<IHealth>().TakeDamage(Damage);
             }
         }
 
