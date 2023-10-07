@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace CodeBase.Enemy
 {
-    public class AgentMoveToHero : MonoBehaviour
+    public class AgentMoveToHero : Follow
     {
         private const float MinimalDistance = 1;
 
@@ -18,7 +18,7 @@ namespace CodeBase.Enemy
         {
             _gameFactory = AllServices.Container.Single<IGameFactory>();
 
-            if (_gameFactory.HeroGameObject != null)
+            if (HeroExists())
                 InitializeHeroTransform();
             else
                 _gameFactory.HeroCreated += OnHeroCreated;
@@ -29,6 +29,9 @@ namespace CodeBase.Enemy
             if (Initialized() && HeroNotReached())
                 Agent.destination = _heroTransform.position;
         }
+
+        private bool HeroExists() => 
+            _gameFactory.HeroGameObject != null;
 
         private void InitializeHeroTransform() => 
             _heroTransform = _gameFactory.HeroGameObject.transform;

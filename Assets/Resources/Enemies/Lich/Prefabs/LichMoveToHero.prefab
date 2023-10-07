@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 4620431979197401879}
   - component: {fileID: 1610207015496284181}
   m_Layer: 0
-  m_Name: FreeLichPBR
+  m_Name: LichMoveToHero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -469,7 +469,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 5
+  m_Speed: 1.2
   m_Acceleration: 15
   avoidancePriority: 50
   m_AngularSpeed: 1600
@@ -534,6 +534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerObserver: {fileID: 7820153785765854496}
   Follow: {fileID: 1550599605163282683}
+  Cooldown: 2
 --- !u!1 &1537370055453520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,7 +1012,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 7
   m_Center: {x: 0, y: 2, z: 0}
 --- !u!114 &7820153785765854496
 MonoBehaviour:
