@@ -1,6 +1,5 @@
 using System;
 using CodeBase.Logic;
-using CodeBase.UI;
 using UnityEngine;
 
 namespace CodeBase.Enemy
@@ -14,9 +13,19 @@ namespace CodeBase.Enemy
         [SerializeField] 
         private float _max;
 
+        public float Current
+        {
+            get => _current;
+            set => _current = value;
+        }
+        
+        public float Max
+        {
+            get => _max;
+            set => _max = value;
+        }
+        
         public event Action HealthChanged;
-        public float Current { get; private set; }
-        public float Max { get; private set; }
 
         public void TakeDamage(float damage)
         {

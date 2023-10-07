@@ -12,7 +12,8 @@ namespace CodeBase.Hero
     {
         public HeroAnimator Animator;
         public CharacterController CharacterController;
-        private IInputService _input;
+
+        public float Cleavage = 0.5f;
 
         private const string LayerHittable = "Hittable";
 
@@ -20,6 +21,7 @@ namespace CodeBase.Hero
 
         private Collider[] _hits = new Collider[3];
         private Stats _stats;
+        private IInputService _input;
 
         private void Awake()
         {
@@ -30,17 +32,20 @@ namespace CodeBase.Hero
 
         private void Update()
         {
-            if (_input.IsAttackButton() && Animator.IsAttacking)
+            if (_input.IsAttackButton() && !Animator.IsAttacking)
                 Animator.PlayAttack();
         }
 
         private void OnAttack()
         {
-            for (int i = 0; i < Hit(); i++) 
+            for (int i = 0; i < Hit(); i++)
+            {
+                PhysicsDebug.DrawDebug(StartPoint(), Cleavage, 1);
                 _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
+            }
         }
 
-        public void LoadProgress(PlayerProgress progress) => 
+        public void LoadProgress(PlayerProgress progress) =>
             _stats = progress.Stats;
 
         private int Hit() =>

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.Enemy
+namespace CodeBase.Logic
 {
     public static class PhysicsDebug   
     {

@@ -11,7 +11,7 @@ namespace CodeBase.Hero
         public HeroAttack Attack;
         public HeroAnimator Animator;
         
-        public GameObject DeathFX;
+        public GameObject DeathFx;
         private bool _isDead;
 
         private void Start() => 
@@ -33,7 +33,7 @@ namespace CodeBase.Hero
             DisableAttack();
             Animator.PlayDeath();
 
-            Instantiate(DeathFX, transform.position, Quaternion.identity);
+            Instantiate(DeathFx, transform.position, Quaternion.identity);
         }
 
         private void DisableAttack() => 

@@ -7,29 +7,32 @@ namespace CodeBase.UI
     {
         public HealthBar HealthBar;
 
-        private IHealth _heroHealth;
+        private IHealth _health;
 
         private void Start()
         {
             IHealth health = GetComponent<IHealth>();
-            
-            if(health != null)
+
+            if (health != null)
                 Construct(health);
         }
 
-        private void OnDestroy() =>
-            _heroHealth.HealthChanged -= UpdateHealthBar;
-
-        public void Construct(IHealth heroHealth)
+        private void OnDestroy()
         {
-            _heroHealth = heroHealth;
+            if (_health != null)
+                _health.HealthChanged -= UpdateHealthBar;
+        }
 
-            _heroHealth.HealthChanged += UpdateHealthBar;
+        public void Construct(IHealth health)
+        {
+            _health = health;
+
+            _health.HealthChanged += UpdateHealthBar;
         }
 
         private void UpdateHealthBar()
         {
-            HealthBar.SetValue(_heroHealth.Current, _heroHealth.Max);
+            HealthBar.SetValue(_health.Current, _health.Max);
         }
     }
 }
