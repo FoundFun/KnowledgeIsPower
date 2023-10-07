@@ -9,6 +9,7 @@ namespace CodeBase.Enemy
     [RequireComponent(typeof(EnemyAnimator))]
     public class Attack : MonoBehaviour
     {
+        private const string LayerPlayer = "Player";
         public EnemyAnimator Animator;
 
         public float AttackCooldown = 3f;
@@ -16,19 +17,20 @@ namespace CodeBase.Enemy
         public float EffectiveDistance = 0.5f;
         public float Damage = 10f;
 
+        private static int _layerMask;
+
         private Collider[] _hits = new Collider[1];
         private Transform _heroTransform;
         private IGameFactory _gameFactory;
         private float _currentAttackCooldown;
         private bool _isAttacking;
-        private int _layerMask;
         private bool _attackIsActive;
 
         private void Awake()
         {
             _gameFactory = AllServices.Container.Single<IGameFactory>();
 
-            _layerMask = 1 << LayerMask.NameToLayer("Player");
+            _layerMask = 1 << LayerMask.NameToLayer(LayerPlayer);
 
             _gameFactory.HeroCreated += OnHeroCreated;
         }
@@ -56,10 +58,10 @@ namespace CodeBase.Enemy
             _isAttacking = false;
         }
 
-        public void DisableAttack() => 
+        public void DisableAttack() =>
             _attackIsActive = false;
 
-        public void EnableAttack() => 
+        public void EnableAttack() =>
             _attackIsActive = true;
 
         private bool Hit(out Collider hit)
@@ -67,12 +69,13 @@ namespace CodeBase.Enemy
             int hitCount = Physics.OverlapSphereNonAlloc(StartPoint(), Cleavage, _hits, _layerMask);
 
             hit = _hits.FirstOrDefault();
-            
+
             return hitCount > 0;
         }
 
-        private Vector3 StartPoint() => 
-            new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * EffectiveDistance;
+        private Vector3 StartPoint() =>
+            new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) +
+            transform.forward * EffectiveDistance;
 
         private bool CanAttack() =>
             _attackIsActive && !_isAttacking && CooldownIsUp();
