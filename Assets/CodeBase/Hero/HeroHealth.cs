@@ -18,7 +18,7 @@ namespace CodeBase.Hero
         public float Current
         {
             get => _state.CurrentHealth;
-            set
+            private set
             {
                 if (_state.CurrentHealth != value)
                 {
@@ -31,7 +31,7 @@ namespace CodeBase.Hero
         public float Max
         {
             get => _state.MaxHealth;
-            set => _state.MaxHealth = value;
+            private set => _state.MaxHealth = value;
         }
 
         public void LoadProgress(PlayerProgress progress)

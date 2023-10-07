@@ -1322,6 +1322,7 @@ GameObject:
   - component: {fileID: 8455994924339269991}
   - component: {fileID: 7385245955205277084}
   - component: {fileID: 1989381971862174943}
+  - component: {fileID: 1742606071461337729}
   m_Layer: 12
   m_Name: hero
   m_TagString: Player
@@ -1484,6 +1485,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 1161429639469402659}
+--- !u!114 &1742606071461337729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e481f775c943949e59177f3ff0e62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 1989381971862174943}
+  Move: {fileID: 4894158653575246722}
+  Animator: {fileID: 1161429639469402659}
+  DeathFX: {fileID: 100006, guid: 2a474af3f4c27be4e9bdce39cfe4315d, type: 3}
 --- !u!1 &178646
 GameObject:
   m_ObjectHideFlags: 0
