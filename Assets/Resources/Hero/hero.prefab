@@ -1321,6 +1321,7 @@ GameObject:
   - component: {fileID: 1946057070807954905}
   - component: {fileID: 8455994924339269991}
   - component: {fileID: 7385245955205277084}
+  - component: {fileID: 1989381971862174943}
   m_Layer: 12
   m_Name: hero
   m_TagString: Player
@@ -1470,6 +1471,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &1989381971862174943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b5faef67854fe5b40e8fd26f94ab0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 1161429639469402659}
 --- !u!1 &178646
 GameObject:
   m_ObjectHideFlags: 0
