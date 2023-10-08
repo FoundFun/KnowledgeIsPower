@@ -533,6 +533,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5473049018173224699, guid: bf98bbecb4c0a4c4aaffb09799f3b2ea, type: 3}
+      propertyPath: MonsterTypeId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7249888688392649481, guid: bf98bbecb4c0a4c4aaffb09799f3b2ea, type: 3}
       propertyPath: Id
       value: Main_40e47968-2f66-43fb-864f-1232af3b2b36
@@ -596,7 +600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5473049018173224699, guid: bf98bbecb4c0a4c4aaffb09799f3b2ea, type: 3}
       propertyPath: MonsterTypeId
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7249888688392649481, guid: bf98bbecb4c0a4c4aaffb09799f3b2ea, type: 3}
       propertyPath: Id

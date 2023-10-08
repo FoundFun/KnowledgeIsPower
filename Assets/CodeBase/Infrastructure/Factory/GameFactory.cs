@@ -49,6 +49,9 @@ namespace CodeBase.Infrastructure.Factory
             monster.GetComponent<AgentMoveToHero>().Construct(HeroGameObject.transform);
             monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
 
+            LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
+            lootSpawner.Construct(this);
+
             Attack attack = monster.GetComponent<Attack>();
             attack.Construct(HeroGameObject.transform);
             attack.Damage = monsterData.Damage;
@@ -59,6 +62,10 @@ namespace CodeBase.Infrastructure.Factory
             
             return monster;
         }
+
+        public GameObject CreateLoot() => 
+            InstantiateRegistered(AssetPath.LootPath);
+
 
         public void Register(ISavedProgressReader progressReader)
         {
