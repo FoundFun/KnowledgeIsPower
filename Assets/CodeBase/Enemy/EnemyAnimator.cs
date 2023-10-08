@@ -21,7 +21,7 @@ namespace CodeBase.Enemy
 
         public AnimatorState State { get; private set; }
 
-        public event Action<AnimatorState> StateEnatered;
+        public event Action<AnimatorState> StateEntered;
         public event Action<AnimatorState> StateExited;
 
         private void Awake() =>
@@ -44,7 +44,7 @@ namespace CodeBase.Enemy
         public void EnteredState(int stateHash)
         {
             State = StateFor(stateHash);
-            StateEnatered?.Invoke(StateFor(stateHash));
+            StateEntered?.Invoke(StateFor(stateHash));
         }
         
         public void ExitedState(int stateHash) =>
