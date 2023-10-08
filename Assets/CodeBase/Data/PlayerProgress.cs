@@ -8,12 +8,14 @@ namespace CodeBase.Data
         public State HeroState;
         public WorldData WorldData;
         public Stats Stats;
+        public KillData KillData;
 
         public PlayerProgress(string initialLevel)
         {
             WorldData = new WorldData(initialLevel);
             HeroState = new State();
             Stats = new Stats();
+            KillData = new KillData();
         }
     }
 }
