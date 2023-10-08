@@ -32,6 +32,14 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHud() =>
             InstantiateRegistered(AssetPath.HudPath);
 
+        public void Register(ISavedProgressReader progressReader)
+        {
+            if (progressReader is ISavedProgress progressWriters)
+                ProgressesWriters.Add(progressWriters);
+
+            ProgressesReaders.Add(progressReader);
+        }
+
         public void Cleanup()
         {
             ProgressesReaders.Clear();
@@ -58,14 +66,6 @@ namespace CodeBase.Infrastructure.Factory
         {
             foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
                 Register(progressReader);
-        }
-
-        private void Register(ISavedProgressReader progressReader)
-        {
-            if (progressReader is ISavedProgress progressWriters)
-                ProgressesWriters.Add(progressWriters);
-
-            ProgressesReaders.Add(progressReader);
         }
     }
 }
