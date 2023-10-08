@@ -1,5 +1,4 @@
 using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +10,7 @@ namespace CodeBase.Enemy
 
         private Transform _heroTransform;
         private IGameFactory _gameFactory;
-        
+
         private void Update() => 
             SetDestinationForAgent();
 

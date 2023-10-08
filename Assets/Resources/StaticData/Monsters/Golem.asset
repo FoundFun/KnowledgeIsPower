@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5186e938ade9492499f1c782c332536a, type: 3}
-  m_Name: Lich
+  m_Name: Golem
   m_EditorClassIdentifier: 
-  MonsterTypeId: 0
-  Health: 4
-  Damage: 3
-  MoveSpeed: 3
-  EffectiveDistance: 0.5
-  Cleavage: 0.5
-  Prefab: {fileID: 6014861440278016539, guid: 9a3cd798f5dd50a4aa77fd01ad358c28, type: 3}
+  MonsterTypeId: 10
+  Health: 10
+  Damage: 20
+  MoveSpeed: 2
+  EffectiveDistance: 0.6
+  Cleavage: 0.7
+  Prefab: {fileID: 5261016488348296696, guid: fef8ee76ba818f84b81b11da6bda5ddf, type: 3}
