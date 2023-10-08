@@ -1,5 +1,3 @@
-using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using UnityEngine;
 
 namespace CodeBase.Enemy
@@ -9,24 +7,16 @@ namespace CodeBase.Enemy
         public float Speed;
 
         private Transform _heroTransform;
-        private IGameFactory _gameFactory;
         private Vector3 _positionToLook;
-
-        private void Start()
-        {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (HeroExists())
-                InitializeHeroTransform();
-            else
-                _gameFactory.HeroCreated += OnHeroCreated;
-        }
 
         private void Update()
         {
             if (Initialized())
                 RotateTowardsHero();
         }
+
+        public void Construct(Transform heroTransform) =>
+            _heroTransform = heroTransform;
 
         private void RotateTowardsHero()
         {
@@ -52,14 +42,5 @@ namespace CodeBase.Enemy
 
         private bool Initialized() =>
             _heroTransform != null;
-
-        private bool HeroExists() =>
-            _gameFactory.HeroGameObject != null;
-
-        private void InitializeHeroTransform() =>
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-
-        private void OnHeroCreated() =>
-            InitializeHeroTransform();
     }
 }

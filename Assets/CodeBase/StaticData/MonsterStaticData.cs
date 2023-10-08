@@ -13,6 +13,9 @@ namespace CodeBase.StaticData
         [Range(1f, 30f)]
         public float Damage;
 
+        [Range(1f, 10f)]
+        public float MoveSpeed;
+
         [Range(0.5f, 1F)]
         public float EffectiveDistance;
         

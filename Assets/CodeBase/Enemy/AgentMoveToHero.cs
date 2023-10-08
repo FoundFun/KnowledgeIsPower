@@ -7,42 +7,21 @@ namespace CodeBase.Enemy
 {
     public class AgentMoveToHero : Follow
     {
-        private const float MinimalDistance = 1;
-
         public NavMeshAgent Agent;
 
         private Transform _heroTransform;
         private IGameFactory _gameFactory;
+        
+        private void Update() => 
+            SetDestinationForAgent();
 
-        private void Start()
+        public void Construct(Transform heroTransform) => 
+            _heroTransform = heroTransform;
+
+        private void SetDestinationForAgent()
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (HeroExists())
-                InitializeHeroTransform();
-            else
-                _gameFactory.HeroCreated += OnHeroCreated;
-        }
-
-        private void Update()
-        {
-            if (Initialized() && HeroNotReached())
+            if (_heroTransform)
                 Agent.destination = _heroTransform.position;
         }
-
-        private bool HeroExists() => 
-            _gameFactory.HeroGameObject != null;
-
-        private void InitializeHeroTransform() => 
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-
-        private bool Initialized() => 
-            _heroTransform != null;
-
-        private void OnHeroCreated() => 
-            InitializeHeroTransform();
-
-        private bool HeroNotReached() => 
-            Vector3.Distance(Agent.transform.position, _heroTransform.position) >= MinimalDistance;
     }
 }

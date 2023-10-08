@@ -2,7 +2,6 @@ using System;
 using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
-using CodeBase.UI;
 using UnityEngine;
 
 namespace CodeBase.Hero
@@ -11,15 +10,15 @@ namespace CodeBase.Hero
     public class HeroHealth : MonoBehaviour, ISavedProgress, IHealth
     {
         public HeroAnimator Animator;
-        
+
         private State _state;
 
         public event Action HealthChanged;
-        
+
         public float Current
         {
             get => _state.CurrentHealth;
-            private set
+            set
             {
                 if (_state.CurrentHealth != value)
                 {
@@ -32,7 +31,7 @@ namespace CodeBase.Hero
         public float Max
         {
             get => _state.MaxHealth;
-            private set => _state.MaxHealth = value;
+            set => _state.MaxHealth = value;
         }
 
         public void LoadProgress(PlayerProgress progress)
@@ -49,7 +48,7 @@ namespace CodeBase.Hero
 
         public void TakeDamage(float damage)
         {
-            if(Current <= 0)
+            if (Current <= 0)
                 return;
 
             Current -= damage;
