@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.StaticData;
@@ -19,12 +20,17 @@ namespace CodeBase.Infrastructure.Factory
         private GameObject HeroGameObject { get; set; }
 
         private readonly IAssets _assets;
+        private readonly IPersistentProgressService _persistentProgressService;
         private IStaticDataService _staticData;
+        private IRandomService _randomService;
 
-        public GameFactory(IAssets assets, IStaticDataService staticData)
+        public GameFactory(IAssets assets, IPersistentProgressService persistentProgressService,
+            IStaticDataService staticData, IRandomService randomService)
         {
             _assets = assets;
             _staticData = staticData;
+            _randomService = randomService;
+            _persistentProgressService = persistentProgressService;
         }
 
         public GameObject CreateHero(GameObject at)
@@ -50,7 +56,8 @@ namespace CodeBase.Infrastructure.Factory
             monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
 
             LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
-            lootSpawner.Construct(this);
+            lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
+            lootSpawner.Construct(this, _randomService);
 
             Attack attack = monster.GetComponent<Attack>();
             attack.Construct(HeroGameObject.transform);
@@ -63,8 +70,14 @@ namespace CodeBase.Infrastructure.Factory
             return monster;
         }
 
-        public GameObject CreateLoot() => 
-            InstantiateRegistered(AssetPath.LootPath);
+        public LootPiece CreateLoot()
+        {
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.LootPath).GetComponent<LootPiece>();
+            
+            lootPiece.Construct(_persistentProgressService.Progress.WorldData);
+            
+            return lootPiece;
+        }
 
 
         public void Register(ISavedProgressReader progressReader)

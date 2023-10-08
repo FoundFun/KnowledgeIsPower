@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
+﻿using CodeBase.Enemy;
+using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Inputs;
@@ -39,20 +40,24 @@ namespace CodeBase.Infrastructure.States
 
         private void RegisterServices()
         {
-            RegisterStaticData();
+            IStaticDataService staticData = RegisterStaticData();
+            IRandomService randomService = new UnityRandomService();
+
             _services.RegisterSingle(InputService());
+            _services.RegisterSingle(randomService);
             _services.RegisterSingle<IAssets>(new AssetProvider());
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(), _services.Single<IStaticDataService>()));
-            _services.RegisterSingle<ISaveLoadService>(
-                new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(),_services.Single<IPersistentProgressService>(), staticData, randomService));
+            _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
         }
 
-        private void RegisterStaticData()
+        private IStaticDataService RegisterStaticData()
         {
             IStaticDataService staticData = new StaticDataService();
             staticData.LoadMonsters();
             _services.RegisterSingle(staticData);
+
+            return staticData;
         }
 
         private static IInputService InputService()
