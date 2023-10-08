@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5186e938ade9492499f1c782c332536a, type: 3}
   m_Name: Lich
   m_EditorClassIdentifier: 
-  Health: 0
-  Damage: 0
-  EffectiveDistance: 0
-  Cleavage: 0
-  Prefab: {fileID: 0}
+  MonsterTypeId: 0
+  Health: 10
+  Damage: 3
+  EffectiveDistance: 0.5
+  Cleavage: 0.5
+  Prefab: {fileID: 6014861440278016539, guid: 9a3cd798f5dd50a4aa77fd01ad358c28, type: 3}
