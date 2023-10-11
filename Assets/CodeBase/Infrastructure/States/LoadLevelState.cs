@@ -1,4 +1,5 @@
 ﻿using CodeBase.CameraLogic;
+using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
@@ -12,6 +13,7 @@ namespace CodeBase.Infrastructure.States
     {
         private const string InitialPointTag = "InitialPoint";
         private const string EnemySpawnerTag = "EnemySpawner";
+
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _curtain;
@@ -55,6 +57,7 @@ namespace CodeBase.Infrastructure.States
         private void InitGameWorld()
         {
             InitSpawners();
+            InitLootPieces();
             
             GameObject hero = InitHero();
 
@@ -63,16 +66,25 @@ namespace CodeBase.Infrastructure.States
             CameraFollow(hero);
         }
 
+        private void InitLootPieces()
+        {
+            foreach (string key in _progressService.Progress.WorldData.LootData.LootPiecesOnScene.Dictionary.Keys)
+            {
+                LootPiece lootPiece = _gameFactory.CreateLoot();
+                lootPiece.GetComponent<UniqueId>().Id = key;
+            }
+        }
+
         private void InitSpawners()
         {
             foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag(EnemySpawnerTag))
             {
-                EnemySpawner spawner = gameObject.GetComponent<EnemySpawner>();
+                EnemySpawner enemySpawner = gameObject.GetComponent<EnemySpawner>();
 
-                _gameFactory.Register(spawner);
+                _gameFactory.Register(enemySpawner);
             }
         }
-
+        
         private GameObject InitHero()
         {
             return _gameFactory.CreateHero(at: GameObject.FindWithTag(InitialPointTag));

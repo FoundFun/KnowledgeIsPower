@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Enemy
@@ -8,11 +9,11 @@ namespace CodeBase.Enemy
     public class LootSpawner : MonoBehaviour
     {
         public EnemyDeath EnemyDeath;
-
+        
         private IGameFactory _gameFactory;
         private IRandomService _randomService;
-        private int _lootMin;
-        private int _lootMax;
+        private int _minValue;
+        private int _maxValue;
 
         public void Construct(IGameFactory gameFactory, IRandomService randomService)
         {
@@ -25,27 +26,31 @@ namespace CodeBase.Enemy
             EnemyDeath.Happened += SpawnLoot;
         }
 
+        public void SetLootValue(int min, int max)
+        {
+            _minValue = min;
+            _maxValue = max;
+        }
+
         private void SpawnLoot()
         {
-            LootPiece loot = _gameFactory.CreateLoot();
-            loot.transform.position = EnemyDeath.transform.position;
+            EnemyDeath.Happened -= SpawnLoot;
 
-            Loot lootItem = GenerateLoot();
-            loot.Initialize(lootItem);
+            LootPiece lootPiece = _gameFactory.CreateLoot();
+            lootPiece.transform.position = transform.position;
+            lootPiece.GetComponent<UniqueId>().GenerateId();
+
+            Loot loot = GenerateLoot();
+      
+            lootPiece.Initialize(loot);
         }
 
         private Loot GenerateLoot()
         {
             return new Loot()
             {
-                Value = _randomService.Next(_lootMin, _lootMax)
+                Value = _randomService.Next(_minValue, _maxValue)
             };
-        }
-
-        public void SetLoot(int min, int max)
-        {
-            _lootMin = min;
-            _lootMax = max;
         }
     }
 }

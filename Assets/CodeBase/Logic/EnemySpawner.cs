@@ -15,8 +15,8 @@ namespace CodeBase.Logic
         public MonsterTypeId MonsterTypeId;
 
         private IGameFactory _factory;
-        private string _id;
         private EnemyDeath _enemyDeath;
+        private string _id;
 
         private void Awake()
         {
@@ -32,9 +32,15 @@ namespace CodeBase.Logic
                 Spawn();
         }
 
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            if (_slain)
+                progress.KillData.ClearedSpawners.Add(_id);
+        }
+
         private void Spawn()
         {
-            GameObject monster = _factory.CreateMonster(MonsterTypeId, transform);
+            GameObject monster = _factory.CreateMonster(MonsterTypeId, this);
 
             _enemyDeath = monster.GetComponent<EnemyDeath>();
             _enemyDeath.Happened += Slay;
@@ -46,12 +52,6 @@ namespace CodeBase.Logic
                 _enemyDeath.Happened -= Slay;
             
             _slain = true;
-        }
-
-        public void UpdateProgress(PlayerProgress progress)
-        {
-            if (_slain)
-                progress.KillData.ClearedSpawners.Add(_id);
         }
     }
 }
