@@ -7,13 +7,14 @@ namespace CodeBase.Enemy
     [RequireComponent(typeof(EnemyAnimator))]
     public class Attack : MonoBehaviour
     {
-        private const string LayerPlayer = "Player";
         public EnemyAnimator Animator;
 
         public float AttackCooldown = 3f;
         public float Cleavage = 0.5f;
         public float EffectiveDistance = 0.5f;
         public float Damage = 10f;
+        
+        private const string LayerPlayer = "Player";
 
         private static int _layerMask;
 
