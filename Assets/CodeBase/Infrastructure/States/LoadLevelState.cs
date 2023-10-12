@@ -2,10 +2,13 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.StaticData;
 using CodeBase.UI;
+using CodeBase.UI.Elements;
+using CodeBase.UI.Services.Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,9 +25,10 @@ namespace CodeBase.Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progress;
         private readonly IStaticDataService _staticData;
+        private readonly IUIFactory _uiFactory;
 
         public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain curtain,
-            IGameFactory gameFactory, IPersistentProgressService progress, IStaticDataService staticData)
+            IGameFactory gameFactory, IPersistentProgressService progress, IStaticDataService staticData, IUIFactory uiFactory)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
@@ -32,6 +36,7 @@ namespace CodeBase.Infrastructure.States
             _gameFactory = gameFactory;
             _progress = progress;
             _staticData = staticData;
+            _uiFactory = uiFactory;
         }
 
         public void Enter(string sceneName)
@@ -46,6 +51,7 @@ namespace CodeBase.Infrastructure.States
 
         private void OnLoaded()
         {
+            InitUIRoot();
             InitGameWorld();
             InformProgressReaders();
 
@@ -57,6 +63,9 @@ namespace CodeBase.Infrastructure.States
             foreach (ISavedProgressReader progressReader in _gameFactory.ProgressesReaders)
                 progressReader.LoadProgress(_progress.Progress);
         }
+
+        private void InitUIRoot() => 
+            _uiFactory.CreateUIRoot();
 
         private void InitGameWorld()
         {
@@ -86,9 +95,7 @@ namespace CodeBase.Infrastructure.States
             LevelStaticData levelData = _staticData.ForLevel(sceneKey);
             
             foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
-            {
                 _gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
-            }
         }
         
         private GameObject InitHero()

@@ -6,5 +6,6 @@
         public const string Hero = "Hero/hero";
         public const string Hud = "Hud/Hud";
         public const string Spawner = "Enemies/SpawnPoint";
+        public const string UIRoot = "UI/UIRoot";
     }
 }

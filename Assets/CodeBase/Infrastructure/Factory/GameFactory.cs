@@ -6,7 +6,8 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.Logic.EnemySpawners;
 using CodeBase.StaticData;
-using CodeBase.UI;
+using CodeBase.UI.Elements;
+using CodeBase.UI.Services.Windows;
 using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
@@ -22,16 +23,18 @@ namespace CodeBase.Infrastructure.Factory
 
         private readonly IAssets _assets;
         private readonly IPersistentProgressService _progressService;
-        private IStaticDataService _staticData;
-        private IRandomService _randomService;
+        private readonly IStaticDataService _staticData;
+        private readonly IRandomService _randomService;
+        private readonly IWindowService _windowService;
 
         public GameFactory(IAssets assets, IPersistentProgressService progressService,
-            IStaticDataService staticData, IRandomService randomService)
+            IStaticDataService staticData, IRandomService randomService, IWindowService windowService)
         {
             _assets = assets;
             _staticData = staticData;
             _randomService = randomService;
             _progressService = progressService;
+            _windowService = windowService;
         }
 
         public GameObject CreateHero(GameObject at)
@@ -43,9 +46,12 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHud()
         {
             GameObject hud = InstantiateRegistered(AssetPath.Hud);
-            
+
             hud.GetComponentInChildren<LootCounter>()
                 .Construct(_progressService.Progress.WorldData);
+
+            foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
+                openWindowButton.Construct(_windowService);
 
             return hud;
         }
@@ -53,7 +59,8 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateMonster(MonsterTypeId typeId, SpawnerPoint spawnerPoint)
         {
             MonsterStaticData monsterData = _staticData.ForMonster(typeId);
-            GameObject monster = Object.Instantiate(monsterData.Prefab, spawnerPoint.transform.position, Quaternion.identity, spawnerPoint.transform);
+            GameObject monster = Object.Instantiate(monsterData.Prefab, spawnerPoint.transform.position,
+                Quaternion.identity, spawnerPoint.transform);
 
             IHealth health = monster.GetComponent<IHealth>();
             health.Current = monsterData.Health;
@@ -64,7 +71,7 @@ namespace CodeBase.Infrastructure.Factory
             monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
 
             EnemyDeath death = monster.GetComponent<EnemyDeath>();
-            
+
             LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
             lootSpawner.Construct(this, _randomService);
             lootSpawner.SetLootValue(monsterData.MinLootValue, monsterData.MaxLootValue);
