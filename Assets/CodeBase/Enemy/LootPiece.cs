@@ -38,7 +38,6 @@ namespace CodeBase.Enemy
             }
         }
 
-
         public void Initialize(Loot loot) =>
             _loot = loot;
 

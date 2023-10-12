@@ -35,13 +35,13 @@ namespace CodeBase.Infrastructure.Factory
 
         public GameObject CreateHero(GameObject at)
         {
-            HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at.transform.position);
+            HeroGameObject = InstantiateRegistered(AssetPath.Hero, at.transform.position);
             return HeroGameObject;
         }
 
         public GameObject CreateHud()
         {
-            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            GameObject hud = InstantiateRegistered(AssetPath.Hud);
             
             hud.GetComponentInChildren<LootCounter>()
                 .Construct(_progressService.Progress.WorldData);
@@ -81,11 +81,20 @@ namespace CodeBase.Infrastructure.Factory
 
         public LootPiece CreateLoot()
         {
-            LootPiece lootPiece = InstantiateRegistered(AssetPath.LootPath).GetComponent<LootPiece>();
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
 
             lootPiece.Construct(_progressService.Progress.WorldData);
 
             return lootPiece;
+        }
+
+        public void CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId)
+        {
+            EnemySpawner spawner = InstantiateRegistered(AssetPath.Spawner, at)
+                .GetComponent<EnemySpawner>();
+
+            spawner.Id = spawnerId;
+            spawner.MonsterTypeId = monsterTypeId;
         }
 
         public void Register(ISavedProgressReader progressReader)
