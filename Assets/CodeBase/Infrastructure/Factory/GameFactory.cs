@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
+using CodeBase.Logic.EnemySpawners;
 using CodeBase.StaticData;
 using CodeBase.UI;
 using UnityEngine;
@@ -49,10 +50,10 @@ namespace CodeBase.Infrastructure.Factory
             return hud;
         }
 
-        public GameObject CreateMonster(MonsterTypeId typeId, EnemySpawner spawner)
+        public GameObject CreateMonster(MonsterTypeId typeId, SpawnerPoint spawnerPoint)
         {
             MonsterStaticData monsterData = _staticData.ForMonster(typeId);
-            GameObject monster = Object.Instantiate(monsterData.Prefab, spawner.transform.position, Quaternion.identity, spawner.transform);
+            GameObject monster = Object.Instantiate(monsterData.Prefab, spawnerPoint.transform.position, Quaternion.identity, spawnerPoint.transform);
 
             IHealth health = monster.GetComponent<IHealth>();
             health.Current = monsterData.Health;
@@ -90,11 +91,12 @@ namespace CodeBase.Infrastructure.Factory
 
         public void CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId)
         {
-            EnemySpawner spawner = InstantiateRegistered(AssetPath.Spawner, at)
-                .GetComponent<EnemySpawner>();
+            SpawnerPoint spawnerPoint = InstantiateRegistered(AssetPath.Spawner, at)
+                .GetComponent<SpawnerPoint>();
 
-            spawner.Id = spawnerId;
-            spawner.MonsterTypeId = monsterTypeId;
+            spawnerPoint.Construct(this);
+            spawnerPoint.Id = spawnerId;
+            spawnerPoint.MonsterTypeId = monsterTypeId;
         }
 
         public void Register(ISavedProgressReader progressReader)

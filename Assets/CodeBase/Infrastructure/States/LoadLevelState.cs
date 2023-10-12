@@ -84,6 +84,7 @@ namespace CodeBase.Infrastructure.States
             string sceneKey = SceneManager.GetActiveScene().name;
 
             LevelStaticData levelData = _staticData.ForLevel(sceneKey);
+            
             foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
             {
                 _gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
