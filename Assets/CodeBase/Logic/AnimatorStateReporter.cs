@@ -10,7 +10,7 @@ namespace CodeBase.Logic
     {
       base.OnStateEnter(animator, stateInfo, layerIndex);
       FindReader(animator);
-     
+
       _stateReader.EnteredState(stateInfo.shortNameHash);
     }
 
@@ -18,7 +18,7 @@ namespace CodeBase.Logic
     {
       base.OnStateExit(animator, stateInfo, layerIndex);
       FindReader(animator);
-     
+
       _stateReader.ExitedState(stateInfo.shortNameHash);
     }
 

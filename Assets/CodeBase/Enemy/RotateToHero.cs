@@ -1,46 +1,45 @@
+using CodeBase.Infrastructure.Factory;
+using CodeBase.Services;
 using UnityEngine;
 
 namespace CodeBase.Enemy
 {
-    public class RotateToHero : Follow
+  public class RotateToHero : Follow
+  {
+    public float Speed;
+
+    private Transform _heroTransform;
+    private Vector3 _positionToLook;
+
+    public void Construct(Transform heroTransform)
+      => _heroTransform = heroTransform;
+    
+    private void Update()
     {
-        public float Speed;
-
-        private Transform _heroTransform;
-        private Vector3 _positionToLook;
-
-        private void Update()
-        {
-            if (Initialized())
-                RotateTowardsHero();
-        }
-
-        public void Construct(Transform heroTransform) =>
-            _heroTransform = heroTransform;
-
-        private void RotateTowardsHero()
-        {
-            UpdatePositionToLookAt();
-
-            transform.rotation = SmoothedRotation(transform.rotation, _positionToLook);
-        }
-
-        private void UpdatePositionToLookAt()
-        {
-            Vector3 positionDiff = _heroTransform.position - transform.position;
-            _positionToLook = new Vector3(positionDiff.x, _positionToLook.y, positionDiff.z);
-        }
-
-        private Quaternion SmoothedRotation(Quaternion transformRotation, Vector3 positionToLook) =>
-            Quaternion.Lerp(transformRotation, TargetRotation(positionToLook), SpeedFactor());
-
-        private Quaternion TargetRotation(Vector3 positionToLook) =>
-            Quaternion.LookRotation(positionToLook);
-
-        private float SpeedFactor() =>
-            Speed * Time.deltaTime;
-
-        private bool Initialized() =>
-            _heroTransform != null;
+      if (_heroTransform)
+        RotateTowardsHero();
     }
+
+    private void RotateTowardsHero()
+    {
+      UpdatePositionToLookAt();
+
+      transform.rotation = SmoothedRotation(transform.rotation, _positionToLook);
+    }
+
+    private void UpdatePositionToLookAt()
+    {
+      Vector3 positionDelta = _heroTransform.position - transform.position;
+      _positionToLook = new Vector3(positionDelta.x, transform.position.y, positionDelta.z);
+    }
+    
+    private Quaternion SmoothedRotation(Quaternion rotation, Vector3 positionToLook) =>
+      Quaternion.Lerp(rotation, TargetRotation(positionToLook), SpeedFactor());
+
+    private Quaternion TargetRotation(Vector3 position) =>
+      Quaternion.LookRotation(position);
+
+    private float SpeedFactor() =>
+      Speed * Time.deltaTime;
+  }
 }

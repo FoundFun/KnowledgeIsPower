@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 
 namespace CodeBase.Data
 {
-    [Serializable]
-    public class LootPieceDataDictionary : DictionaryDataBase<string, LootPieceData>
-    {
-    }
+  [Serializable]
+  public class LootPieceDataDictionary : SerializableDictionary<string, LootPieceData>
+  {
+  }
 }

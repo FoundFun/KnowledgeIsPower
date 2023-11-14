@@ -1,36 +1,45 @@
+﻿using System.Threading.Tasks;
 using CodeBase.Infrastructure.AssetManagement;
-using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Services.Ads;
+using CodeBase.Services.PersistentProgress;
+using CodeBase.Services.StaticData;
 using CodeBase.StaticData.Windows;
 using CodeBase.UI.Services.Windows;
-using CodeBase.UI.Windows;
+using CodeBase.UI.Windows.Shop;
 using UnityEngine;
 
 namespace CodeBase.UI.Services.Factory
 {
-    public class UIFactory : IUIFactory
+  public class UIFactory : IUIFactory
+  {
+    private const string UIRootPath = "UIRoot";
+    private readonly IAssetProvider _assets;
+    private readonly IStaticDataService _staticData;
+    
+    private Transform _uiRoot;
+    private readonly IPersistentProgressService _progressService;
+    private readonly IAdsService _adsService;
+
+    public UIFactory(IAssetProvider assets, IStaticDataService staticData, IPersistentProgressService progressService,
+      IAdsService adsService)
     {
-        private readonly IAssets _assets;
-        private readonly IStaticDataService _staticData;
-        private readonly IPersistentProgressService _progressService;
-
-        private Transform _uiRoot;
-
-        public UIFactory(IAssets assets, IStaticDataService staticData, IPersistentProgressService progressService)
-        {
-            _progressService = progressService;
-            _assets = assets;
-            _staticData = staticData;
-        }
-
-        public void CreateShop()
-        {
-            WindowConfig config = _staticData.ForWindow(WindowId.Shop);
-            WindowBase window = Object.Instantiate(config.Prefab, _uiRoot);
-            window.Construct(_progressService);
-        }
-
-        public void CreateUIRoot() => 
-            _uiRoot = _assets.Instantiate(AssetPath.UIRoot).transform;
+      _assets = assets;
+      _staticData = staticData;
+      _progressService = progressService;
+      _adsService = adsService;
     }
+
+    public void CreateShop()
+    {
+      WindowConfig config = _staticData.ForWindow(WindowId.Shop);
+      ShopWindow window = Object.Instantiate(config.Template, _uiRoot) as ShopWindow;
+      window.Construct(_adsService,_progressService);
+    }
+
+    public async Task CreateUIRoot()
+    {
+      GameObject root = await _assets.Instantiate(UIRootPath);
+      _uiRoot = root.transform;
+    }
+  }
 }

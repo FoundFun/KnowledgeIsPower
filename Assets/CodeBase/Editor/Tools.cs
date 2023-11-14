@@ -1,15 +1,15 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CodeBase.Editor
 {
-    public class Tools
+  public class Tools 
+  {
+    [MenuItem("Tools/ClearPrefs")]
+    public static void ClearPrefs()
     {
-        [MenuItem("Tools/Clear prefs")]
-        public static void ClearPrefs()
-        {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.Save();
-        }
+      PlayerPrefs.DeleteAll();
+      PlayerPrefs.Save();
     }
+  }
 }

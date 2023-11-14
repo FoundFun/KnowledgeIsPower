@@ -1,57 +1,57 @@
+using System;
 using CodeBase.Data;
-using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.Inputs;
-using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Enemy;
 using CodeBase.Logic;
+using CodeBase.Services;
+using CodeBase.Services.Input;
+using CodeBase.Services.PersistentProgress;
 using UnityEngine;
 
 namespace CodeBase.Hero
 {
-    [RequireComponent(typeof(HeroAnimator), typeof(CharacterController))]
-    public class HeroAttack : MonoBehaviour, ISavedProgressReader
+  [RequireComponent(typeof(HeroAnimator), typeof(CharacterController))]
+  public class HeroAttack : MonoBehaviour, ISavedProgressReader
+  {
+    public HeroAnimator Animator;
+    public CharacterController CharacterController;
+
+    private IInputService _inputService;
+
+    private static int _layerMask;
+    private Collider[] _hits = new Collider[3];
+    private Stats _stats;
+
+    private void Awake()
     {
-        public HeroAnimator Animator;
-        public CharacterController CharacterController;
+      _inputService = AllServices.Container.Single<IInputService>();
 
-        public float Cleavage = 0.5f;
-
-        private const string LayerHittable = "Hittable";
-
-        private static int _layerMask;
-
-        private Collider[] _hits = new Collider[3];
-        private Stats _stats;
-        private IInputService _input;
-
-        private void Awake()
-        {
-            _input = AllServices.Container.Single<IInputService>();
-
-            _layerMask = 1 << LayerMask.NameToLayer(LayerHittable);
-        }
-
-        private void Update()
-        {
-            if (_input.IsAttackButton() && !Animator.IsAttacking)
-                Animator.PlayAttack();
-        }
-
-        private void OnAttack()
-        {
-            for (int i = 0; i < Hit(); i++)
-            {
-                PhysicsDebug.DrawDebug(StartPoint(), Cleavage, 1);
-                _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
-            }
-        }
-
-        public void LoadProgress(PlayerProgress progress) =>
-            _stats = progress.Stats;
-
-        private int Hit() =>
-            Physics.OverlapSphereNonAlloc(StartPoint() + transform.forward, _stats.DamageRadius, _hits, _layerMask);
-
-        private Vector3 StartPoint() =>
-            new Vector3(transform.position.x, CharacterController.center.y / 2, transform.position.z);
+      _layerMask = 1 << LayerMask.NameToLayer("Hittable");
     }
+
+    private void Update()
+    {
+      if(_inputService.IsAttackButtonUp() && !Animator.IsAttacking)
+        Animator.PlayAttack();
+    }
+
+    private void OnAttack()
+    {
+      PhysicsDebug.DrawDebug(StartPoint() + transform.forward, _stats.DamageRadius, 1.0f);
+      for (int i = 0; i < Hit(); ++i)
+      {
+        _hits[i].transform.parent.GetComponent<IHealth>().TakeDamage(_stats.Damage);
+      }
+    }
+
+    private int Hit() => 
+      Physics.OverlapSphereNonAlloc(StartPoint() + transform.forward, _stats.DamageRadius, _hits, _layerMask);
+
+    private Vector3 StartPoint() =>
+      new Vector3(transform.position.x, CharacterController.center.y / 2, transform.position.z);
+
+    public void LoadProgress(PlayerProgress progress)
+    {
+      _stats = progress.HeroStats;
+    }
+  }
 }
